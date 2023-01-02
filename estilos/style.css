@@ -28,6 +28,12 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+}
+
+.cell.x, 
+.cell.circle{
+    cursor: not-allowed;
 }
 
 .cell:nth-child(1),
@@ -52,6 +58,37 @@ body {
 .cell:nth-child(8),
 .cell:nth-child(9){
     border-bottom: none;
+}
+
+.cell.x::before,
+.cell.x::after,
+.board.x .cell:not(.x):not(.circle):hover::after,
+.board.x .cell:not(.x):not(.circle):hover::before{
+    content: "";
+    height: calc(100px * 0.15);
+    width: calc(100px * 0.9);
+    background-color: white;
+    position: absolute;
+}
+
+.cell.x::before,
+.board.x .cell:not(.x):not(.circle):hover::before{
+    transform: rotate(45deg);
+}
+
+.cell.x::after,
+.board.x .cell:not(.x):not(.circle):hover::after{
+    transform: rotate(-45deg);
+}
+
+.cell.circle::before,
+.cell.circle::after{
+    content: "";
+    height: calc(100px * 0.9);
+    width: calc(100px * 0.9);
+    background-color: white;
+    position: absolute;
+    border-radius: 50%;
 }
 
 
