@@ -3,6 +3,7 @@ const board = document.querySelector("[data-board]");
 const winningMessageTextEelement = document.querySelector("[data-winning-message-text]");
 const winningMessage = document.querySelector("[data-winning-message]");
 let isCircleTurn;
+const restartButton = document.querySelector("[data-restart-button]");
 
 const winningCombinations = [
     [0, 1, 2],
@@ -17,15 +18,26 @@ const winningCombinations = [
 
 const startGame = () =>{
     for (const cell of cellElements){
+        cell.classList.remove("circle");
+        cell.classList.remove("x");
+        cell.removeEventListener("click", handleClick);
         cell.addEventListener("click", handleClick, {once: true});
     };
 
     isCircleTurn = false;
     board.classList.add("x");
+    winningMessage.classList.remove("show-winning-message")
 };
 
-const endGame = (draw) => {
+const endGame = (isDraw) => {
+    if (isDraw){
+        winningMessageTextEelement.innerHTML = "Empate!"
+    } else {
+        winningMessageTextEelement.innerHTML = isCircleTurn ? "Circulo venceu" : "X venceu"
+    };
 
+
+    winningMessage.classList.add("show-winning-message")
 };
 
 const checkForWin = (currentPlayer) =>{
@@ -35,6 +47,12 @@ const checkForWin = (currentPlayer) =>{
     });
    });
 };
+
+const checkForDraw = () => {
+    return [...cellElements].every((cell) => {
+      return cell.classList.contains("x") || cell.classList.contains("circle");
+    });
+  };
 
 const placeMark = (cell, classToAdd) => {
     cell.classList.add(classToAdd);
@@ -60,7 +78,7 @@ const handleClick = (e) => {
 
     const isWin = checkForWin(classToAdd);
     if(isWin) {
-        console.log('ganhou');
+        endGame(false)
     };
 
 
@@ -69,3 +87,4 @@ const handleClick = (e) => {
 
 startGame();
 
+restartButton.addEventListener("click", startGame);
